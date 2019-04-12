@@ -26,7 +26,18 @@ const User = mongoose.model('User', {
                 throw new Error('Email is invalid');
             }
         }
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 6,
+        trim: true,
+        validate(value) {
+            if (validator.matches(value, 'password')) {
+                throw new Error ('You can\'t chose this password')
+            }
+        }
     }
 });
 
-module.exports = {User}
+module.exports = { User }

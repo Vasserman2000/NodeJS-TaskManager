@@ -1,47 +1,36 @@
 const mongoose = require('mongoose');
+const user = require('../models/user');
 
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
     useNewUrlParser: true,
     useCreateIndex: true
 });
 
-const User = mongoose.model('User', {
-    name: {
-        type: String
-    },
-    age: {
-        type: Number
-    }
+
+
+const newUser = user.User({
+    name: 'Eli  ',
+    age: 19,
+    email: 'Alan@gmail.com'
 });
 
-
-// const me = new User({
-//     name: 'Joe',
-//     age: 'shalom'
-// });
-
-// me.save().then(() => {
-//     console.log(me);
-// }).catch((error) => {
-//     console.log(error.message);
-// });
-
-const Task = mongoose.model('Task', {
-    description: {
-        type: String
-    },
-    completed: {
-        type: Boolean
-    }
-});
-
-const task = new Task({
-    description: 'Go to school',
-    completed: false
-});
-
-task.save().then(() => {
-    console.log(task);
+newUser.save().then(() => {
+    console.log(newUser);
 }).catch((error) => {
-    console.log(error)
+    console.log(error.message);
 });
+
+
+
+// const task = new Task({
+//     description: 'Go to school',
+//     completed: false
+// });
+
+// task.save().then(() => {
+//     console.log(task);
+// }).catch((error) => {
+//     console.log(error)
+// });
+
+//mongoose.connection.close();

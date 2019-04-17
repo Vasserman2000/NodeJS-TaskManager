@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-mongodb-server": "..\\..\\..\\..\\mongodb\\bin\\mongod.exe --dbpath=..\\..\\..\\..\\mongodb-data",
-    "start": "node src\\db\\mongoose.js"
+    "start": "node src\\index.js",
+    "dev": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",

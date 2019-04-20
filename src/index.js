@@ -1,26 +1,24 @@
 const express = require('express');
-require('../src/models/user');
+require('../src/db/mongoose');
 const User = require('../src/models/user')
 
-//console.log(User)
 
 const app = express();
 
 const port = process.env.PORT || 3000;
 
-app.use(express.json())
+// parse http request body to json?
+app.use(express.json());
 
 app.post('/users', (req, res) => {
     const user = User.User(req.body);
 
     user.save().then(() => {
-        console.log(user)
+        res.send(user);
     }).catch((error) => {
-        console.log(error.message)
+        res.status(400).send(error);
     });
-
-    res.send(user.name);
-})
+});
 
 app.listen(port, () => {
     console.log('Server is up on port ' + port)

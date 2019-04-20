@@ -29,7 +29,7 @@ const User = mongoose.model('User', {
     },
     password: {
         type: String,
-        required: true,
+        required: [true, "Please provide a password!"],
         minlength: 6,
         trim: true,
         validate(value) {

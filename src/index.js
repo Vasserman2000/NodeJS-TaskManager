@@ -1,6 +1,6 @@
 const express = require('express');
 require('../src/db/mongoose');
-const User = require('../src/models/user');
+const User = require('../src/models/user').User;
 const Task = require('../src/models/task');
 
 
@@ -29,6 +29,28 @@ app.post('/tasks', (req, res) => {
     }).catch((error) => {
         res.status(400).send(error);
     });
+});
+
+app.get('/users', (req, res) => {
+    User.find({}).then((users) => {
+        res.send(users);
+    }).catch((error) => {
+        res.status(500).send(error);
+    })
+});
+
+app.get('/users/:id', (req, res) => {
+
+    User.findById(req.params.id).then((user) => {
+        if (!user) {
+            return res.status(404).send();
+        }
+
+        res.send(user);
+        
+    }).catch((error) => {
+        res.status(500).send(error);
+    })
 });
 
 

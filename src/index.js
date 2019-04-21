@@ -1,6 +1,7 @@
 const express = require('express');
 require('../src/db/mongoose');
-const User = require('../src/models/user')
+const User = require('../src/models/user');
+const Task = require('../src/models/task');
 
 
 const app = express();
@@ -14,11 +15,22 @@ app.post('/users', (req, res) => {
     const user = User.User(req.body);
 
     user.save().then(() => {
-        res.send(user);
+        res.status(201).send(user);
     }).catch((error) => {
         res.status(400).send(error);
     });
 });
+
+app.post('/tasks', (req, res) => {
+    const task = Task.Task(req.body);
+
+    task.save().then(() => {
+        res.status(201).send(task);
+    }).catch((error) => {
+        res.status(400).send(error);
+    });
+});
+
 
 app.listen(port, () => {
     console.log('Server is up on port ' + port)

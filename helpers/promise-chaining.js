@@ -36,21 +36,40 @@ Task.findByIdAndDelete('5cc0552843fceda17d4d0867').then((task) => {
 */
 
 
-const updateAgeAndCount = async (id, age) => {
+// const updateAgeAndCount = async (id, age) => {
 
-    const user = User.findByIdAndUpdate(id, { age });
+//     const user = User.findByIdAndUpdate(id, { age });
 
-    const count =  User.countDocuments( {age} );
+//     const count =  User.countDocuments( {age} );
 
-    return count;
+//     return count;
+// }
+
+
+// updateAgeAndCount('5caf99995aefe12c784ab3e3', 120).then((count) => {
+
+//     console.log(count);
+
+// }).catch((e) => {
+//     console.log(e.message);
+// });
+
+
+const deleteTaskAndCount = async (id) => {
+
+    const task = Task.findByIdAndDelete(id);
+
+    const uncompletedTasks = Task.find({ completed: false});
+
+    const count = uncompletedTasks.countDocuments();
+
+    return { task, count};
 }
 
-
-updateAgeAndCount('5caf99995aefe12c784ab3e3', 120).then((count) => {
-
-    console.log(count);
-
-}).catch((e) => {
-    console.log(e.message);
+deleteTaskAndCount({_id: '5cbf658b2c3d9840dc5cb53d'}).then((result) => {
+    Promise.all([result.task, result.count]).then((res) => {
+        console.log(res);
+    });
+}).catch((err) => {
+    console.log(err.message);
 });
-    

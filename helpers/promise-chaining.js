@@ -38,17 +38,17 @@ Task.findByIdAndDelete('5cc0552843fceda17d4d0867').then((task) => {
 
 // const updateAgeAndCount = async (id, age) => {
 
-//     const user = User.findByIdAndUpdate(id, { age });
+//     const user = await User.findByIdAndUpdate(id, { age });
 
-//     const count =  User.countDocuments( {age} );
+//     const count =  await User.countDocuments( {age} );
 
-//     return count;
+//     return  { user, count };
 // }
 
 
-// updateAgeAndCount('5caf99995aefe12c784ab3e3', 120).then((count) => {
+// updateAgeAndCount('5caf99995aefe12c784ab3e3', 120).then((result) => {
 
-//     console.log(count);
+//     console.log(result);
 
 // }).catch((e) => {
 //     console.log(e.message);
@@ -57,19 +57,17 @@ Task.findByIdAndDelete('5cc0552843fceda17d4d0867').then((task) => {
 
 const deleteTaskAndCount = async (id) => {
 
-    const task = Task.findByIdAndDelete(id);
+    const task = await Task.findByIdAndDelete(id);
 
-    const uncompletedTasks = Task.find({ completed: false});
+    const uncompletedTasks =  Task.find({ completed: false});
 
-    const count = uncompletedTasks.countDocuments();
+    const count = await uncompletedTasks.countDocuments();
 
-    return { task, count};
+    return { task, count };
 }
 
-deleteTaskAndCount({_id: '5cbf658b2c3d9840dc5cb53d'}).then((result) => {
-    Promise.all([result.task, result.count]).then((res) => {
-        console.log(res);
-    });
+deleteTaskAndCount({_id: '5cbf658b2c3d9840dc5cb53f'}).then((result) => {
+    console.log(result)
 }).catch((err) => {
     console.log(err.message);
 });

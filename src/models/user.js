@@ -30,7 +30,7 @@ const User = mongoose.model('User', {
     password: {
         type: String,
         required: [true, "Please provide a password!"],
-        minlength: 6,
+        minlength: [6, 'Minimum password length is 6 characters'],
         trim: true,
         validate(value) {
             if (validator.matches(value, 'password')) {

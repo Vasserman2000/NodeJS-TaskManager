@@ -100,6 +100,33 @@ app.patch('/users/:id', async (req, res) => {
     }
 });
 
+app.patch('/tasks/:id', async (req, res) => {
+    const allowedUpdates = ['description', 'completed'];
+    const updates = Object.keys(req.body);
+
+    const isValidOperation = updates.every((prop) => allowedUpdates.includes(prop)) && updates.length > 0;
+
+    console.log(isValidOperation + ', updates: ' + updates.length)
+
+    if (!isValidOperation) {
+        return res.status(400).send({error: 'invalid input'});
+    }
+
+    try {
+        const task = Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+
+        if (!task) {
+            return res.status(404).send();
+        }
+
+        res.send(task);
+
+    } catch (e) {
+        res.status(400).send(e.message);
+    }
+
+});
+
 app.listen(port, () => {
     console.log('Server is up on port ' + port)
 });

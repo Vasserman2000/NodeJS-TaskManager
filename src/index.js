@@ -1,7 +1,6 @@
 const express = require('express');
 require('../src/db/mongoose');
-const User = require('../src/models/user').User;
-const Task = require('../src/models/task').Task;
+const userRouter = require('../src/routers/user')
 
 
 const app = express();
@@ -10,17 +9,8 @@ const port = process.env.PORT || 3000;
 
 // parse http request body to json?
 app.use(express.json());
+app.use(userRouter.router);
 
-app.post('/users', async (req, res) => {
-    const user = User(req.body);
-
-    try {
-        await user.save();
-        res.status(201).send(user);
-    } catch(e) {
-        res.status(400).send(e.message);
-    }
-});
 
 app.post('/tasks', (req, res) => {
     const task = Task.Task(req.body);
@@ -32,29 +22,6 @@ app.post('/tasks', (req, res) => {
     });
 });
 
-app.get('/users', async (req, res) => {
-    try {
-        const users = await User.find({});
-        res.send(users);
-    } catch (e) {
-        res.status(500).send(e);
-    }
-});
-
-app.get('/users/:id', async (req, res) => {
-
-    const _id = req.params.id;
-    try {
-        const user = await User.findById(_id);
-        if (!user) {
-            return res.status(404).send();
-        }
-
-        res.send(user);
-    } catch (e) {
-        res.status(500).send(e);
-    }
-});
 
 app.get('/tasks', (req, res) => {
     Task.find().then((tasks) => {
@@ -78,27 +45,6 @@ app.get('/tasks/:id', (req, res) => {
     });
 });
 
-app.patch('/users/:id', async (req, res) => {
-    const allowedUpdates = ['name', 'age', 'password', 'email'];
-    const updates = Object.keys(req.body);
-    const isValidOperation = updates.every((prop) => allowedUpdates.includes(prop));
-    
-    if (!isValidOperation) {
-        return res.status(400).send({ error: 'Invalid updates!' });
-    }
-
-    console.log(isValidOperation);
-    try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-        if (!user) {
-            return res.status(404).send();
-        }
-
-        res.send(user);
-    } catch (e) {
-        res.status(400).send(e);
-    }
-});
 
 app.patch('/tasks/:id', async (req, res) => {
     const allowedUpdates = ['description', 'completed'];
@@ -125,19 +71,6 @@ app.patch('/tasks/:id', async (req, res) => {
         res.status(400).send(e.message);
     }
 
-});
-
-app.delete('/users/:id', async (req, res) => {
-    try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        if (!user) {
-            return res.status(404).send();
-        }
-
-        res.send(user);
-    } catch(e) {
-        res.status(500).send();
-    }
 });
 
 

@@ -1,0 +1,1 @@
+const Task = require('../src/models/task').Task;

@@ -23,10 +23,10 @@ const myFunction = async () => {
     const password = 'Red12345!';
     const hashedPassword = await bcrypt.hash(password, 8);
 
-    console.log(password)
-    console.log(hashedPassword)
+    console.log('Plain text password: ' + password)
+    console.log('Hashed password: ' + hashedPassword)
 
-    console.log('Comparison returned: ' + await bcrypt.compare('Red12345!', hashedPassword))
+    console.log('Is the password correct: ' + await bcrypt.compare('Red12345!', hashedPassword))
 }
 
 myFunction();

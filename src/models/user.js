@@ -37,6 +37,9 @@ const userSchema = new mongoose.Schema({
                 throw new Error ('You can\'t chose this password')
             }
         }
+    },
+    isActive: {
+        type: Number
     }
 });
 

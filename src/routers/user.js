@@ -41,7 +41,7 @@ router.get('/users/:id', async (req, res) => {
 
 
 router.patch('/users/:id', async (req, res) => {
-    const allowedUpdates = ['name', 'age', 'password', 'email'];
+    const allowedUpdates = ['name', 'age', 'password', 'email', 'isActive'];
     const updates = Object.keys(req.body);
     const isValidOperation = updates.every((prop) => allowedUpdates.includes(prop));
     
@@ -70,7 +70,8 @@ router.patch('/users/:id', async (req, res) => {
 
 router.delete('/users/:id', async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        //const user = await User.findByIdAndDelete(req.params.id);
+        const user = await User.findByIdAndUpdate(req.params.id, { isActive: 0 });
         if (!user) {
             return res.status(404).send();
         }

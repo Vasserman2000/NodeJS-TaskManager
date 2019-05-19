@@ -16,9 +16,9 @@ const port = process.env.PORT || 3000;
 //     }
 // });
 
-app.use((req, res, next) => {
-    res.status(503).send('Site is currently down. Chek back soon!')
-});
+// app.use((req, res, next) => {
+//     res.status(503).send('Site is currently down. Chek back soon!')
+// });
 
 // parse http request body to json?
 app.use(express.json());

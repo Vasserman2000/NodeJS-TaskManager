@@ -3,7 +3,7 @@ const Task = require('../models/task').Task;
 const router = new express.Router();
 
 router.post('/tasks', (req, res) => {
-    const task = Task.Task(req.body);
+    const task = Task(req.body);
 
     task.save().then(() => {
         res.status(201).send(task);

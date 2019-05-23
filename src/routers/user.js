@@ -28,7 +28,7 @@ router.post('/users/login', async (req, res) => {
 });
 
 router.get('/users/me', auth, async (req, res) => {
-    res.send(req.user);
+    res.send('Hello ' + req.user.name + '. Here is your account information: ' + req.user);
 });
 
 

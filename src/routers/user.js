@@ -27,8 +27,18 @@ router.post('/users/login', async (req, res) => {
     }
 });
 
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        const user = req.user;
+        console.log(user.name + ', ' + req.token)
+        res.status(200).send();
+    } catch (e) {
+
+    }
+});
+
 router.get('/users/me', auth, async (req, res) => {
-    res.send('Hello ' + req.user.name + '. Here is your account information: ' + req.user);
+    res.send(req.user);
 });
 
 

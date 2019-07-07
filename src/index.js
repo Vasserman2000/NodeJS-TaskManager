@@ -2,7 +2,8 @@ const express = require('express');
 require('../src/db/mongoose');
 const userRouter = require('../src/routers/user');
 const taskRouter = require('../src/routers/task');
-const task = require('../src/models/task').Task;
+const Task = require('../src/models/task').Task;
+const User = require('../src/models/user').User;
 
 
 const app = express();
@@ -46,10 +47,14 @@ const myFunction = async () => {
 
 
 const testMyFunc = async () => {
-    const myTask = await  task.findById({ _id: '5d1f0de306d5a95c50f13b07' });
-    console.log('------------------------------------------------------------')
-    await myTask.populate('owner').execPopulate();
-    console.log(myTask);
+    // const myTask = await  Task.findById({ _id: '5d1f0de306d5a95c50f13b07' });
+    // console.log('------------------------------------------------------------')
+    // await myTask.populate('owner').execPopulate();
+    // console.log(myTask);
+
+    const user = await User.findById('5d1af15c6277db1444e758cd');
+    await user.populate('tasks').execPopulate();
+    console.log(user.tasks)
 }
 
 testMyFunc();

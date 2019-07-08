@@ -3,11 +3,11 @@ const User = require('../models/user').User;
 
 const auth = async (req, res, next) => {
     try {
-        console.log('in '+'auth: ')
+        //console.log('in '+'auth: ')
         const token = req.header('Authorization').replace('Bearer ', '');
-        console.log('in '+'auth: '+token)
+        //console.log('in '+'auth: '+token)
         const decoded = jwt.verify(token, 'thiismynewcourse');
-        console.log('decoded: '+ JSON.stringify(decoded))
+        //console.log('decoded: '+ JSON.stringify(decoded))
 
         const user = await User.findOne({'_id': decoded._id, 'tokens.token': token });
 

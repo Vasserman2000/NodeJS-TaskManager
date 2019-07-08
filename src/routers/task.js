@@ -3,6 +3,7 @@ const Task = require('../models/task').Task;
 const router = new express.Router();
 const auth = require('../middleware/auth');
 
+// create task
 router.post('/tasks', auth, (req, res) => {
     const task = new Task({
         ...req.body,
@@ -17,30 +18,41 @@ router.post('/tasks', auth, (req, res) => {
     });
 });
 
-
-router.get('/tasks', (req, res) => {
-    Task.find().then((tasks) => {
-        res.send(tasks);
-    }).catch((error) => {
-        res.status(500).send(error.message);
-    });
-});
-
-router.get('/tasks/:id', (req, res) => {
-    const _id = req.params.id;
-
-    Task.findById(_id).then((task) => {
-        if (!task) {
-            return res.status(404).send();
+// get all my tasks
+router.get('/tasks', auth, async (req, res) => {
+    try {
+        const myTasks = await Task.find({owner: req.user._id});
+        if (myTasks.length === 0) {
+            return res.status(404).send('NO TASKS FOUND');
         }
 
-        res.send(task);
-    }).catch((error) => {
-        res.status(500).send();
-    });
+        await myTasks.forEach(task => task.populate('owner', 'name').execPopulate());
+        res.send(myTasks);    
+    } catch(e) {
+        res.status(500).send(e.message);
+    }
 });
 
+// get taks by id
+router.get('/tasks/:id', auth, async (req, res) => {
+    const _id = req.params.id;
 
+    try {
+        const task = await Task.findOne({_id, owner: req.user._id});
+        
+        if (!task) {
+            return res.status(404).send('TASK NOT FOUND');
+        }
+
+        await task.populate('owner','name').execPopulate();
+
+        res.send(task);
+    } catch (e) {
+        res.status(500).send(e.message);
+    }
+});
+
+// update task
 router.patch('/tasks/:id', async (req, res) => {
     const allowedUpdates = ['description', 'completed'];
     const updates = Object.keys(req.body);
@@ -71,7 +83,7 @@ router.patch('/tasks/:id', async (req, res) => {
 
 });
 
-
+// delete task
 router.delete('/tasks/:id', async (req, res) => {
     try {
         const task = await Task.findByIdAndDelete(req.params.id);

@@ -54,7 +54,7 @@ const testMyFunc = async () => {
 
     const user = await User.findById('5d1af15c6277db1444e758cd');
     await user.populate('tasks').execPopulate();
-    console.log(user.tasks)
+    //console.log(user.tasks)
 }
 
 testMyFunc();

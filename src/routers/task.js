@@ -82,11 +82,11 @@ router.patch('/tasks/:id', auth, async (req, res) => {
 });
 
 // delete task
-router.delete('/tasks/:id', async (req, res) => {
+router.delete('/tasks/:id', auth, async (req, res) => {
     try {
-        const task = await Task.findByIdAndDelete(req.params.id);
+        const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id });
         if (!task) {
-            return res.status(404).send('A task with provided ID has not found');
+            return res.status(404).send('A task with provided ID has not been found or you are not it\'s owner');
         }
 
         res.send(task);

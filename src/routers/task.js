@@ -21,13 +21,22 @@ router.post('/tasks', auth, (req, res) => {
 // get all my tasks
 router.get('/tasks', auth, async (req, res) => {
     try {
-        const myTasks = await Task.find({owner: req.user._id});
-        if (myTasks.length === 0) {
+        const match = {};
+
+        if (req.query.completed) {
+            match.completed = req.query.completed === 'true';
+        }
+
+        await req.user.populate({
+            path: 'tasks',
+            match
+        }).execPopulate();
+
+        if (req.user.tasks.length === 0) {
             return res.status(404).send('NO TASKS FOUND');
         }
 
-        await myTasks.forEach(task => task.populate('owner', 'name').execPopulate());
-        res.send(myTasks);    
+        res.send(req.user.tasks);    
     } catch(e) {
         res.status(500).send(e.message);
     }

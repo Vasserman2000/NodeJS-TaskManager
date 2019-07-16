@@ -106,7 +106,7 @@ router.delete('/users/me', auth, async (req, res) => {
 
 
 const avatarUpload = multer({
-    dest: 'images/me/avatar',
+    //dest: 'images/me/avatar',
     limits: {
         fileSize: 1000000
     },
@@ -117,9 +117,28 @@ const avatarUpload = multer({
         return cb(undefined, true);
     }
 });
+
 // My avatar
-router.post('/users/me/avatar', avatarUpload.single('myAvatar'), (req, res) => {
+router.post('/users/me/avatar', auth, avatarUpload.single('myAvatar'), async (req, res) => {
+    req.user.avatar = req.file.buffer;
+
+    await req.user.save();
+
     res.send();
+}, (error, req, res, next) => {
+    res.status(400).send({error: error.message});
+});
+
+// Delete avatar
+router.delete('/users/me/avatar', auth, async (req, res) => {
+    try {
+        req.user.avatar = undefined;
+        await req.user.save();
+        res.send('The avatar has been deleted');
+    }
+    catch (e) {
+        res.status(400).send(e.message);
+    }
 });
 
 module.exports = { router };

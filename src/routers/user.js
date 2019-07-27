@@ -18,7 +18,16 @@ router.post('/users', async (req, res) => {
         const token = await user.generateAuthToken();
         res.status(201).send({ user, token });
     } catch(e) {
-        res.status(400).send(e.message);
+        res.status(400).send((e)=>{
+            const errorCode = e.code;
+            console.log(errorCode)
+            switch (errorCode) {
+                case '11000':
+                    return 'Duplicate email';
+                default:
+                    return e.message;
+            }
+        })
     }
 });
 

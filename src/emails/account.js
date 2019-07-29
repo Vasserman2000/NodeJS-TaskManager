@@ -7,7 +7,8 @@ const sendWelcomeEmail = (email, name) => {
         to: email,
         from: 'elisha@mail.com',
         subject: 'Thanks for joining in!',
-        text: `Welcome to the app, ${name}. Let me know how you get along with the app.`
+        text: `Welcome to the app, ${name}. Let me know how you get along with the app.`,
+        html: '<p style="color:blue">!</p>'
     });
     console.log('email sent')
 }

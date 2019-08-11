@@ -31,9 +31,16 @@ test('Should log in existing user', async () => {
     }).expect(200);
 });
 
-test('Shoul not login nonexisted user', async () => {
+test('Should not login nonexisted user', async () => {
     await request(app).post('/users/login').send({
         email: 'Aaa@aaa.com',
         password: '1234555'
     }).expect(400)
+});
+
+
+test('Should update user profiel', async () => {
+    await request(app).patch('/users/me').send({
+        age: 30
+    }).expect(200)
 })

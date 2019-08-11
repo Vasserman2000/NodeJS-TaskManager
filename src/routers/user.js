@@ -46,6 +46,7 @@ router.post('/users/login', async (req, res) => {
 });
 
 
+
 // Log Out
 router.post('/users/logout', auth, async (req, res) => {
     try {

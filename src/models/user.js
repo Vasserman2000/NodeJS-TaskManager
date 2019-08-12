@@ -76,6 +76,7 @@ userSchema.methods.toJSON = function() {
 userSchema.methods.generateAuthToken = async function () {
     // this is an instance method
     const user = this;
+
     const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
 
     user.tokens = user.tokens.concat({ token });
@@ -113,7 +114,7 @@ userSchema.pre('save', async function (next) {
     const user = this;
     
     if (user.isModified('password')) {
-        console.log('THE PASSWORD IS EITHER NEW OR WAS MODIFIED. SAVING NEW HASHED PASSWORD.');
+        //console.log('THE PASSWORD IS EITHER NEW OR WAS MODIFIED. SAVING NEW HASHED PASSWORD.');
         user.password = await bcrypt.hash(user.password, 8);
     }
 

@@ -27,9 +27,9 @@ test('Should add two numbers async/await', async () => {
     expect(sum).toBe(50);
 })
 
-// test('async test demo', (done) => {
-//     setTimeout(() => {
-//         expect(1).toBe(2);
-//         done();
-//     }, 2000);
-// })
+test('async test demo', (done) => {
+    setTimeout(() => {
+        expect(1).toBe(1);
+        done();
+    }, 2000);
+})

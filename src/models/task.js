@@ -4,8 +4,7 @@ const taksSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true,
-        trim: true,
-        unique: true
+        trim: true
     },
     completed: {
         type: Boolean,

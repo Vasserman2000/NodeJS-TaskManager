@@ -35,7 +35,7 @@ router.get('/tasks', auth, async (req, res) => {
             sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
         }
 
-        console.log(parseInt(req.query.limit))
+        //console.log(parseInt(req.query.limit))
         await req.user.populate({
             path: 'tasks',
             match,
@@ -108,6 +108,7 @@ router.patch('/tasks/:id', auth, async (req, res) => {
 router.delete('/tasks/:id', auth, async (req, res) => {
     try {
         const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id });
+        //console.log('... ' + task);
         if (!task) {
             return res.status(404).send('A task with provided ID has not been found or you are not it\'s owner');
         }
